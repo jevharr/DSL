@@ -27,5 +27,19 @@ heart_disease_3 <- select(heart_disease, thal, chest_pain)
 describe(heart_disease_3)
 
 #1.1.3
+max_ix<-function(d) 
+{
+  ix=which(!is.na(d))
+  res=ifelse(length(ix)==0, NA, d[max(ix)])
+  return(res)
+}
+
 data_world <- read_csv(file = 'https://goo.gl/2TrDgN', na = '..') %>% 
-  
+  filter(`Series Code`!="")
+
+data_world <- data_world %>% 
+  select(contains('YR')) %>% 
+  rowwise() %>% 
+  is.na() %>% 
+  which()
+  mutate(newest_value = max_ix(.))
